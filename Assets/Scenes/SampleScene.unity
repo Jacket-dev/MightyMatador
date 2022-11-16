@@ -309,6 +309,7 @@ MonoBehaviour:
   moveSpeed: 10
   jumpSpeed: 25
   maxJumpTime: 0
+  lance: {fileID: 242614953906748500, guid: f1ace51948f614847a0e3826b3a4fed9, type: 3}
 --- !u!70 &1618530642
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -344,7 +345,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!1 &1623611923
 GameObject:
@@ -358,7 +359,7 @@ GameObject:
   - component: {fileID: 1623611925}
   - component: {fileID: 1623611924}
   m_Layer: 0
-  m_Name: Square (2)
+  m_Name: Wall Right
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -450,7 +451,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1623611923}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.41, y: -0.5047, z: 0}
+  m_LocalPosition: {x: 10.73, y: -0.5047, z: 0}
   m_LocalScale: {x: 3.3169358, y: 7.109958, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -465,8 +466,32 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 274413885243339836, guid: 50891a8b143c27a4cb3be8a68889ad64, type: 3}
+      propertyPath: m_Simulated
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 274413885243339836, guid: 50891a8b143c27a4cb3be8a68889ad64, type: 3}
       propertyPath: m_Constraints
-      value: 6
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 274413885243339836, guid: 50891a8b143c27a4cb3be8a68889ad64, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2737206715639991560, guid: 50891a8b143c27a4cb3be8a68889ad64, type: 3}
+      propertyPath: m_Size.y
+      value: 3.751126
+      objectReference: {fileID: 0}
+    - target: {fileID: 2737206715639991560, guid: 50891a8b143c27a4cb3be8a68889ad64, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.4881755
+      objectReference: {fileID: 0}
+    - target: {fileID: 7788005453796559438, guid: 50891a8b143c27a4cb3be8a68889ad64, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7788005453796559438, guid: 50891a8b143c27a4cb3be8a68889ad64, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 7788005453820516889, guid: 50891a8b143c27a4cb3be8a68889ad64, type: 3}
       propertyPath: m_RootOrder
@@ -516,9 +541,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7788005453820516889, guid: 50891a8b143c27a4cb3be8a68889ad64, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7788005453820516895, guid: 50891a8b143c27a4cb3be8a68889ad64, type: 3}
       propertyPath: m_Name
       value: Taureau
+      objectReference: {fileID: 0}
+    - target: {fileID: 7788005453820516895, guid: 50891a8b143c27a4cb3be8a68889ad64, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7788005453820516895, guid: 50891a8b143c27a4cb3be8a68889ad64, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 7788005454423712193, guid: 50891a8b143c27a4cb3be8a68889ad64, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 7788005455515524208, guid: 50891a8b143c27a4cb3be8a68889ad64, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50891a8b143c27a4cb3be8a68889ad64, type: 3}
@@ -552,7 +597,7 @@ GameObject:
   - component: {fileID: 1809454322}
   - component: {fileID: 1809454321}
   m_Layer: 0
-  m_Name: Square (1)
+  m_Name: Wall Left
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -644,7 +689,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1809454320}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.4206, y: -0.4865, z: 0}
+  m_LocalPosition: {x: -10.64, y: -0.4865, z: 0}
   m_LocalScale: {x: 3.3169358, y: 7.0256157, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -663,7 +708,7 @@ GameObject:
   - component: {fileID: 1943257511}
   - component: {fileID: 1943257510}
   m_Layer: 3
-  m_Name: Square
+  m_Name: Ground
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -756,7 +801,7 @@ Transform:
   m_GameObject: {fileID: 1943257509}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.0036, y: -4.49, z: 0}
-  m_LocalScale: {x: 20.151493, y: 1, z: 1}
+  m_LocalScale: {x: 22.82, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -791,11 +836,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 271260403812504234, guid: f1ace51948f614847a0e3826b3a4fed9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.28
+      value: -9.56
       objectReference: {fileID: 0}
     - target: {fileID: 271260403812504234, guid: f1ace51948f614847a0e3826b3a4fed9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.57
+      value: 4.38
       objectReference: {fileID: 0}
     - target: {fileID: 271260403812504234, guid: f1ace51948f614847a0e3826b3a4fed9, type: 3}
       propertyPath: m_LocalPosition.z
