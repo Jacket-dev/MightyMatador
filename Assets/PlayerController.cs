@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     public float jumpSpeed;
     public float maxJumpTime;
     public GameObject lance;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,16 +34,10 @@ public class PlayerController : MonoBehaviour
     {
         rb.velocity = new Vector2(Input.GetAxis("Horizontal")*moveSpeed, rb.velocity.y);
         RaycastHit2D groundedRayCast = Physics2D.Raycast(capsuleCollider.bounds.center, Vector2.down, capsuleCollider.bounds.extents.y+.1f, LayerMask.GetMask("Ground"));
-        //jumpTime=Jump(jumpTime,maxJumpTime,jumping);
-        /*if(IsGrounded())
-        {
-            rb.velocity.Set(rb.velocity.x, Input.GetAxis("Jump")*jumpSpeed);
-        }*/
-
 
         //Jump Handle
         //Might need changes because right now player sticks on walls could be something else tho
-        if (Input.GetAxis("Jump") != 0 && IsGrounded())
+        if (IsGrounded()&& Input.GetAxis("Jump") != 0)
         {
             jumping = true;
             jumpTime = 0;
@@ -51,6 +46,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, Input.GetAxis("Jump") * jumpSpeed);
             jumpTime += Time.deltaTime;
+            shot = true;
         }
         if(jumpTime>maxJumpTime || Input.GetAxis("Jump")==0)
         {
@@ -58,7 +54,6 @@ public class PlayerController : MonoBehaviour
         }
 
         //Projectile Handle
-        //Work in progress
         if(Input.GetAxis("Jump") != 0 && jumping==false && !IsGrounded() && !shot)
         {
             Instantiate(lance,this.transform.position, new Quaternion(0,0,0,1));
@@ -68,13 +63,12 @@ public class PlayerController : MonoBehaviour
         {
             shot = false;
         }
+
+        //Other stuff
     }
 
-    private float Jump(float jumpTime, float maxJumpTime, bool jumping) //TODO change this so it works
-    {
-        return jumpTime;
-    }
-
+    //Checks if player is touching ground by raycasting from the player toward the ground. If raycast detects a collision it returns false
+    //Raycast only checks collision with "Ground" Layer
     private bool IsGrounded()
     {
         Color rayColor;
@@ -91,5 +85,10 @@ public class PlayerController : MonoBehaviour
             Debug.DrawRay(capsuleCollider.bounds.center, Vector2.down * (capsuleCollider.bounds.extents.y + 0.1f), rayColor);
             return false;
         }
+    }
+
+    private void Kill()
+    {
+        Destroy(this.gameObject);
     }
 }

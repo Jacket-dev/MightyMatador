@@ -35,7 +35,7 @@ public class BullAI : MonoBehaviour
         }
         if(collision.gameObject.tag == "Player")
         {
-            Debug.Log("PlayerIsDead");
+            collision.gameObject.SendMessage("Kill");
         }
     }
 }
