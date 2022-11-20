@@ -9,6 +9,7 @@ public class BullAI : MonoBehaviour
     private Rigidbody2D rb;
     private bool facingLeft;
     public float bullSpeed;
+    public int bullHealth;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +25,11 @@ public class BullAI : MonoBehaviour
             rb.velocity = Vector2.left * bullSpeed;
         }
         else rb.velocity = Vector2.right * bullSpeed;
+
+        if(bullHealth<=0)
+        {
+            Destroy(this.gameObject);
+        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -37,5 +43,10 @@ public class BullAI : MonoBehaviour
         {
             collision.gameObject.SendMessage("Kill");
         }
+    }
+    private void Hit(int lanceDamage)
+    {
+        bullHealth -= lanceDamage;
+        Debug.Log(bullHealth);
     }
 }

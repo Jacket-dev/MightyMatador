@@ -9,19 +9,26 @@ public class LanceManager : MonoBehaviour
     private BoxCollider2D boxCollider;
     private bool onGround;
     public float speed;
+    public int lanceDamage;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
-        Physics2D.IgnoreCollision(boxCollider, GameObject.FindGameObjectWithTag("GroundedLance").GetComponent<Collider2D>());
         onGround = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        rb.velocity = Vector2.down * speed;
+        if(!onGround)
+        {
+            rb.velocity = Vector2.down * speed;
+        }
+        else
+        {
+            rb.velocity = Vector2.zero;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -29,16 +36,21 @@ public class LanceManager : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             onGround = true;
-            Physics2D.IgnoreCollision(boxCollider, GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>());
-            for(int i=0;i<collision.gameObject.GetComponents<Collider2D>().Length;i++)
-            {
-                Physics2D.IgnoreCollision(boxCollider, GameObject.FindGameObjectWithTag("Enemy").GetComponents<Collider2D>()[i]);
-            }
-            //boxCollider.isTrigger = true;
+            rb.bodyType = RigidbodyType2D.Static;
+            boxCollider.isTrigger = true;
         }
-        if (collision.gameObject.CompareTag("Enemy")&& !onGround)
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            collision.gameObject.SendMessage("Hit");
+            collision.gameObject.SendMessage("Hit",lanceDamage); //Not working
+            GameObject.FindGameObjectWithTag("Player").SendMessage("AddLance"); //To do better, Unity is screaming about this
+            Destroy(this.gameObject);
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.SendMessage("AddLance");
             Destroy(this.gameObject);
         }
     }

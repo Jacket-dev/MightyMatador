@@ -10,10 +10,13 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private CapsuleCollider2D capsuleCollider;
+    private AudioSource audioAmmoGain;
     private float jumpTime;
     private bool grounded;
     private bool shot;
     private bool jumping;
+    private int ammoLeft;
+    public int maxAmmo;
     public float moveSpeed;
     public float jumpSpeed;
     public float maxJumpTime;
@@ -27,6 +30,7 @@ public class PlayerController : MonoBehaviour
         jumpTime = 0;
         jumping= false;
         shot = true;
+        ammoLeft = maxAmmo;
     }
 
     // Update is called once per frame
@@ -54,9 +58,10 @@ public class PlayerController : MonoBehaviour
         }
 
         //Projectile Handle
-        if(Input.GetAxis("Jump") != 0 && jumping==false && !IsGrounded() && !shot)
+        if(Input.GetAxis("Jump") != 0 && jumping==false && !IsGrounded() && !shot && ammoLeft>0)
         {
             Instantiate(lance,this.transform.position, new Quaternion(0,0,0,1));
+            ammoLeft--;
             shot = true;
         }
         if(Input.GetAxis("Jump") == 0) //Doublon avec un if dans le saut
@@ -90,5 +95,24 @@ public class PlayerController : MonoBehaviour
     private void Kill()
     {
         Destroy(this.gameObject);
+    }
+    private void AddLance()
+    {
+        ammoLeft++;
+        switch (ammoLeft)
+        {
+            case 1:
+                audioAmmoGain.pitch = 1f;
+                audioAmmoGain.Play();
+                break;
+            case 2:
+                audioAmmoGain.pitch = 1.5f;
+                audioAmmoGain.Play();
+                break;
+            case 3:
+                audioAmmoGain.pitch = 2f;
+                audioAmmoGain.Play();
+                break;
+        }
     }
 }
