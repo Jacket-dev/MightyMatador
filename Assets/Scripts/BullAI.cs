@@ -28,6 +28,7 @@ public class BullAI : MonoBehaviour
 
         if(bullHealth<=0)
         {
+            GameObject.FindGameObjectWithTag("GameController").SendMessage("Victory");
             Destroy(this.gameObject);
         }
     }
@@ -47,6 +48,5 @@ public class BullAI : MonoBehaviour
     private void Hit(int lanceDamage)
     {
         bullHealth -= lanceDamage;
-        Debug.Log(bullHealth);
     }
 }

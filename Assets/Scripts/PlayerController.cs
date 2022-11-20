@@ -10,12 +10,15 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private CapsuleCollider2D capsuleCollider;
-    private AudioSource audioAmmoGain;
-    private float jumpTime;
+    private AudioSource audioOnPickupAmmo;
     private bool grounded;
     private bool shot;
     private bool jumping;
+    private bool alive;
     private int ammoLeft;
+    private float jumpTime;
+
+
     public int maxAmmo;
     public float moveSpeed;
     public float jumpSpeed;
@@ -30,6 +33,7 @@ public class PlayerController : MonoBehaviour
         jumpTime = 0;
         jumping= false;
         shot = true;
+        alive = true;
         ammoLeft = maxAmmo;
     }
 
@@ -68,7 +72,6 @@ public class PlayerController : MonoBehaviour
         {
             shot = false;
         }
-
         //Other stuff
     }
 
@@ -94,6 +97,7 @@ public class PlayerController : MonoBehaviour
 
     private void Kill()
     {
+        GameObject.FindGameObjectWithTag("GameController").SendMessage("Defeat");
         Destroy(this.gameObject);
     }
     private void AddLance()
@@ -102,16 +106,16 @@ public class PlayerController : MonoBehaviour
         switch (ammoLeft)
         {
             case 1:
-                audioAmmoGain.pitch = 1f;
-                audioAmmoGain.Play();
+                audioOnPickupAmmo.pitch = 1f;
+                audioOnPickupAmmo.Play();
                 break;
             case 2:
-                audioAmmoGain.pitch = 1.5f;
-                audioAmmoGain.Play();
+                audioOnPickupAmmo.pitch = 1.5f;
+                audioOnPickupAmmo.Play();
                 break;
             case 3:
-                audioAmmoGain.pitch = 2f;
-                audioAmmoGain.Play();
+                audioOnPickupAmmo.pitch = 2f;
+                audioOnPickupAmmo.Play();
                 break;
         }
     }

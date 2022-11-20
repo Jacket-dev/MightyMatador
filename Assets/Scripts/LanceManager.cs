@@ -25,10 +25,6 @@ public class LanceManager : MonoBehaviour
         {
             rb.velocity = Vector2.down * speed;
         }
-        else
-        {
-            rb.velocity = Vector2.zero;
-        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -41,7 +37,7 @@ public class LanceManager : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            collision.gameObject.SendMessage("Hit",lanceDamage); //Not working
+            collision.gameObject.SendMessage("Hit",lanceDamage);
             GameObject.FindGameObjectWithTag("Player").SendMessage("AddLance"); //To do better, Unity is screaming about this
             Destroy(this.gameObject);
         }
