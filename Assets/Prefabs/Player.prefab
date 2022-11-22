@@ -100,11 +100,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ac60a3ccd2a89459ed467ddb3969d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lance: {fileID: 242614953906748500, guid: f1ace51948f614847a0e3826b3a4fed9, type: 3}
   maxAmmo: 3
   moveSpeed: 10
   jumpSpeed: 25
   maxJumpTime: 0
-  lance: {fileID: 242614953906748500, guid: f1ace51948f614847a0e3826b3a4fed9, type: 3}
+  lanceCooldown: 0.5
 --- !u!50 &1445404010604041988
 Rigidbody2D:
   serializedVersion: 4

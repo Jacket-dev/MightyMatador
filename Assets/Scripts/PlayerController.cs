@@ -11,20 +11,26 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private CapsuleCollider2D capsuleCollider;
     private AudioSource audioOnPickupAmmo;
-    private bool grounded;
-    private bool shot;
+
+    private SpriteRenderer spriteRenderer;
+    private Sprite[] spriteList;
+
+    private bool canShoot;
     private bool jumping;
     private bool alive;
     private int ammoLeft;
     private float jumpTime;
 
+    private float actualLanceCooldown;
 
+    
+    public GameObject lance;
     public int maxAmmo;
     public float moveSpeed;
     public float jumpSpeed;
     public float maxJumpTime;
-    public GameObject lance;
 
+    public float lanceCooldown;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,69 +38,96 @@ public class PlayerController : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         jumpTime = 0;
         jumping= false;
-        shot = true;
-        alive = true;
+        canShoot = false;
         ammoLeft = maxAmmo;
     }
 
     // Update is called once per frame
     void Update()
     {
-        rb.velocity = new Vector2(Input.GetAxis("Horizontal")*moveSpeed, rb.velocity.y);
-        RaycastHit2D groundedRayCast = Physics2D.Raycast(capsuleCollider.bounds.center, Vector2.down, capsuleCollider.bounds.extents.y+.1f, LayerMask.GetMask("Ground"));
+        
+        rb.velocity = Move();
+
 
         //Jump Handle
-        //Might need changes because right now player sticks on walls could be something else tho
-        if (IsGrounded()&& Input.GetAxis("Jump") != 0)
+        if (IsGrounded())
         {
-            jumping = true;
             jumpTime = 0;
         }
-        if(jumping)
+        if(Input.GetAxis("Jump") != 0)
         {
-            rb.velocity = new Vector2(rb.velocity.x, Input.GetAxis("Jump") * jumpSpeed);
-            jumpTime += Time.deltaTime;
-            shot = true;
+            jumping = true;
         }
         if(jumpTime>maxJumpTime || Input.GetAxis("Jump")==0)
         {
             jumping = false;
         }
+        if(jumping)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, Input.GetAxis("Jump") * jumpSpeed);
+            jumpTime += Time.deltaTime;
+            canShoot = false;
+        }
+
 
         //Projectile Handle
-        if(Input.GetAxis("Jump") != 0 && jumping==false && !IsGrounded() && !shot && ammoLeft>0)
+        actualLanceCooldown -= Time.deltaTime;
+        if(Input.GetAxis("Jump") != 0 && canShoot && ammoLeft>0) //Will see some changes in the future
         {
-            Instantiate(lance,this.transform.position, new Quaternion(0,0,0,1));
-            ammoLeft--;
-            shot = true;
+            if(actualLanceCooldown <=0)
+            {
+                Instantiate(lance,this.transform.position, new Quaternion(0,0,0,1));
+                ammoLeft--;
+                canShoot = true;
+                actualLanceCooldown = lanceCooldown;
+            }
         }
         if(Input.GetAxis("Jump") == 0) //Doublon avec un if dans le saut
         {
-            shot = false;
+            canShoot = true;
         }
+
         //Other stuff
     }
-
     //Checks if player is touching ground by raycasting from the player toward the ground. If raycast detects a collision it returns false
     //Raycast only checks collision with "Ground" Layer
     private bool IsGrounded()
     {
-        Color rayColor;
+        Color rayColor; //Debugging stuff
         RaycastHit2D groundedRayCast = Physics2D.Raycast(capsuleCollider.bounds.center, Vector2.down, capsuleCollider.bounds.extents.y + .1f, LayerMask.GetMask("Ground"));
         if(groundedRayCast.collider!=null)
         {
             rayColor = Color.green;
-            Debug.DrawRay(capsuleCollider.bounds.center, Vector2.down * (capsuleCollider.bounds.extents.y + 0.1f), rayColor);
+            Debug.DrawRay(capsuleCollider.bounds.center, Vector2.down * (capsuleCollider.bounds.extents.y + 0.1f), rayColor); //Debugging stuff
             return true;
         }
         else
         {
             rayColor = Color.red;
-            Debug.DrawRay(capsuleCollider.bounds.center, Vector2.down * (capsuleCollider.bounds.extents.y + 0.1f), rayColor);
+            Debug.DrawRay(capsuleCollider.bounds.center, Vector2.down * (capsuleCollider.bounds.extents.y + 0.1f), rayColor); //Debugging stuff
             return false;
         }
     }
-
+    
+    private Vector2 Move()
+    {
+        RaycastHit2D leftRayCast = Physics2D.Raycast(capsuleCollider.bounds.center, Vector2.left, capsuleCollider.bounds.extents.x + .1f, LayerMask.GetMask("Ground"));
+        RaycastHit2D rightRayCast = Physics2D.Raycast(capsuleCollider.bounds.center, Vector2.right, capsuleCollider.bounds.extents.x + .1f, LayerMask.GetMask("Ground"));
+        Vector2 result;
+        if (leftRayCast.collider != null && Input.GetAxis("Horizontal") < 0)
+        {
+            result = new Vector2(0, rb.velocity.y);
+        }
+        else if (rightRayCast.collider != null && Input.GetAxis("Horizontal") > 0)
+        {
+            result = new Vector2(0, rb.velocity.y);
+        }
+        else
+        {
+            result = new Vector2(Input.GetAxis("Horizontal") * moveSpeed, rb.velocity.y);
+        }
+        return result;
+    }
     private void Kill()
     {
         GameObject.FindGameObjectWithTag("GameController").SendMessage("Defeat");
