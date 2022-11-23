@@ -130,6 +130,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1445404010604041990, guid: 7a82b8bf8858e2245b30020253434cc6, type: 3}
+      propertyPath: jumpHeight
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1445404010604041990, guid: 7a82b8bf8858e2245b30020253434cc6, type: 3}
+      propertyPath: maxJumpTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1445404010604041990, guid: 7a82b8bf8858e2245b30020253434cc6, type: 3}
+      propertyPath: jumpDuration
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1445404010604042008, guid: 7a82b8bf8858e2245b30020253434cc6, type: 3}
       propertyPath: m_RootOrder
       value: 1
