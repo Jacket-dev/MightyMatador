@@ -131,6 +131,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1445404010604041990, guid: 7a82b8bf8858e2245b30020253434cc6, type: 3}
+      propertyPath: jumpHeight
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1445404010604041990, guid: 7a82b8bf8858e2245b30020253434cc6, type: 3}
+      propertyPath: jumpDuration
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1445404010604041990, guid: 7a82b8bf8858e2245b30020253434cc6, type: 3}
       propertyPath: lanceCooldown
       value: 0.5
       objectReference: {fileID: 0}

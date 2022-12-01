@@ -11,9 +11,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private CapsuleCollider2D capsuleCollider;
     private AudioSource audioOnPickupAmmo;
+    private Animator animator;
 
     private SpriteRenderer spriteRenderer;
-    private Sprite[] spriteList;
 
     private bool canShoot;
     private bool jumping;
@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
+        animator = GetComponent<Animator>();
         jumpTime = 0;
         jumping= false;
         canShoot = false;
@@ -53,7 +54,7 @@ public class PlayerController : MonoBehaviour
         jumpSpeed *= Mathf.Sqrt(rb.gravityScale); //Will move to Start() when finished Debugging if we keep it
         */
         Move();
-        JumpV2();
+        Jump();
         Shoot();
         //Other stuff
 
@@ -99,12 +100,14 @@ public class PlayerController : MonoBehaviour
         {
             rayColor = Color.green;
             Debug.DrawRay(capsuleCollider.bounds.center, Vector2.down * (capsuleCollider.bounds.extents.y + 0.1f), rayColor); //Debugging stuff
+            animator.SetBool("Grounded",true);
             return true;
         }
         else
         {
             rayColor = Color.red;
             Debug.DrawRay(capsuleCollider.bounds.center, Vector2.down * (capsuleCollider.bounds.extents.y + 0.1f), rayColor); //Debugging stuff
+            animator.SetBool("Grounded", false);
             return false;
         }
     }
@@ -147,11 +150,14 @@ public class PlayerController : MonoBehaviour
         }
         if (jumping)
         {
+            animator.SetTrigger("Jump");
             rb.velocity = new Vector2(rb.velocity.x, Input.GetAxis("Jump") * jumpSpeed);
             canShoot = false;
         }
     }
 
+
+    //IDLE Animation activates when switching direction TODO Change this
     private void Move()
     {
         RaycastHit2D leftRayCast = Physics2D.Raycast(capsuleCollider.bounds.center, Vector2.left, capsuleCollider.bounds.extents.x + .1f, LayerMask.GetMask("Ground"));
@@ -159,14 +165,26 @@ public class PlayerController : MonoBehaviour
         if (leftRayCast.collider != null && Input.GetAxis("Horizontal") < 0)
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
+            animator.SetBool("Moving",true);
         }
         else if (rightRayCast.collider != null && Input.GetAxis("Horizontal") > 0)
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
+            animator.SetBool("Moving", true);
         }
         else
         {
             rb.velocity = new Vector2(Input.GetAxis("Horizontal") * moveSpeed, rb.velocity.y);
+            if (Input.GetAxis("Horizontal") < 0)
+            {
+                transform.localScale = new Vector3(-.67f, transform.localScale.y, transform.localScale.z);
+
+            }
+            else if (Input.GetAxis("Horizontal") > 0)
+            {
+                transform.localScale = new Vector3(.67f, transform.localScale.y, transform.localScale.z);
+            }
+            animator.SetBool("Moving", Input.GetAxis("Horizontal") != 0 && rb.velocity!=Vector2.zero);
         }
     }
     private void Kill()
