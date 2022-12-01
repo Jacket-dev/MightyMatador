@@ -60,34 +60,6 @@ public class PlayerController : MonoBehaviour
 
 
     }
-    private void JumpV2()
-    {
-
-        jumpSpeed = Mathf.Sqrt(Mathf.Abs(2 * Physics2D.gravity.y * jumpHeight));
-        rb.gravityScale = Mathf.Sqrt(Mathf.Abs(2 * Physics2D.gravity.y * jumpHeight)) / (jumpDuration + maxJumpTime); //Testing stuff
-        jumpSpeed *= Mathf.Sqrt(rb.gravityScale); //Will move to Start() when finished Debugging if we keep it
-
-
-        jumpTime += Time.deltaTime;
-        if (IsGrounded())
-        {
-            jumpTime = 0;
-        }
-
-        if (Input.GetAxis("Jump") != 0)
-        {
-            jumping = true;
-        }
-        if (jumpTime > maxJumpTime || Input.GetAxis("Jump") == 0)
-        {
-            jumping = false;
-        }
-        if (jumping)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, Input.GetAxis("Jump") * jumpSpeed);
-            canShoot = false;
-        }
-    }
 
 
     //Checks if player is touching ground by raycasting from the player toward the ground. If raycast detects a collision it returns false
@@ -155,6 +127,34 @@ public class PlayerController : MonoBehaviour
             canShoot = false;
         }
     }
+    private void JumpV2()
+    {
+
+        jumpSpeed = Mathf.Sqrt(Mathf.Abs(2 * Physics2D.gravity.y * jumpHeight));
+        rb.gravityScale = Mathf.Sqrt(Mathf.Abs(2 * Physics2D.gravity.y * jumpHeight)) / (jumpDuration + maxJumpTime); //Testing stuff
+        jumpSpeed *= Mathf.Sqrt(rb.gravityScale); //Will move to Start() when finished Debugging if we keep it
+
+
+        jumpTime += Time.deltaTime;
+        if (IsGrounded())
+        {
+            jumpTime = 0;
+        }
+
+        if (Input.GetAxis("Jump") != 0)
+        {
+            jumping = true;
+        }
+        if (jumpTime > maxJumpTime || Input.GetAxis("Jump") == 0)
+        {
+            jumping = false;
+        }
+        if (jumping)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, Input.GetAxis("Jump") * jumpSpeed);
+            canShoot = false;
+        }
+    }
 
 
     //IDLE Animation activates when switching direction TODO Change this
@@ -165,11 +165,13 @@ public class PlayerController : MonoBehaviour
         if (leftRayCast.collider != null && Input.GetAxis("Horizontal") < 0)
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
+            transform.localScale = new Vector3(-.67f, transform.localScale.y, transform.localScale.z);
             animator.SetBool("Moving",true);
         }
         else if (rightRayCast.collider != null && Input.GetAxis("Horizontal") > 0)
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
+            transform.localScale = new Vector3(.67f, transform.localScale.y, transform.localScale.z);
             animator.SetBool("Moving", true);
         }
         else
@@ -184,6 +186,7 @@ public class PlayerController : MonoBehaviour
             {
                 transform.localScale = new Vector3(.67f, transform.localScale.y, transform.localScale.z);
             }
+            Debug.Log(Input.GetAxis("Horizontal"));
             animator.SetBool("Moving", Input.GetAxis("Horizontal") != 0 && rb.velocity!=Vector2.zero);
         }
     }
